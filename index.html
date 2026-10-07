@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Форма">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Домашня форма</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--ink:#0f172a;--mut:#64748b;--line:#e2e8f0;--acc:#0d9488;--acc2:#ccfbf1;--warn:#b45309;--warnbg:#fef3c7;--bad:#b91c1c;--badbg:#fee2e2;--ok:#15803d}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--card:#131c2e;--ink:#e5e7eb;--mut:#94a3b8;--line:#243047;--acc:#2dd4bf;--acc2:#134e4a;--warn:#fbbf24;--warnbg:#3a2a0a;--bad:#f87171;--badbg:#3b1212;--ok:#4ade80}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+main{max-width:560px;margin:0 auto;padding:16px 16px 24px}
+h1{font-size:24px;margin:8px 0 4px}h2{font-size:19px;margin:0 0 8px}h3{font-size:16px;margin:0 0 4px}
+p{margin:6px 0}.mut{color:var(--mut);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:14px;font-size:17px;font-weight:600;background:var(--acc);color:#fff;cursor:pointer;margin-top:10px}
+@media (prefers-color-scheme:dark){.btn{color:#042f2e}}
+.btn.sec{background:transparent;color:var(--acc);border:1.5px solid var(--acc)}
+.btn.ghost{background:transparent;color:var(--mut);font-weight:500}
+.btn.bad{background:var(--badbg);color:var(--bad)}
+.row{display:flex;gap:8px;align-items:center}
+.sp{justify-content:space-between}
+.dots{display:flex;gap:8px;margin:8px 0}
+.dot{width:34px;height:34px;border-radius:50%;border:2px solid var(--acc);display:grid;place-items:center;font-weight:700}
+.dot.on{background:var(--acc);color:var(--card)}
+.banner{border-radius:12px;padding:12px 14px;margin:12px 0;font-weight:600}
+.banner.warn{background:var(--warnbg);color:var(--warn)}.banner.bad{background:var(--badbg);color:var(--bad)}.banner.ok{background:var(--acc2);color:var(--acc)}
+ul.plain{list-style:none;padding:0;margin:8px 0}ul.plain li{padding:8px 0;border-bottom:1px solid var(--line)}ul.plain li:last-child{border:0}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;background:var(--acc2);color:var(--acc);font-weight:600}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav button{flex:1;background:none;border:0;padding:12px 4px;font-size:14px;color:var(--mut);font-weight:600}
+nav button.on{color:var(--acc)}
+.set{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.set:last-child{border:0}
+.set .n{width:26px;color:var(--mut);font-weight:700}
+.set .val{width:64px;text-align:center;font-size:22px;font-weight:700}
+.pm{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:22px}
+.ck{margin-left:auto;width:56px;height:44px;border-radius:12px;border:2px solid var(--acc);background:transparent;color:var(--acc);font-size:20px;font-weight:700}
+.ck.done{background:var(--acc);color:var(--card)}
+.sw{height:44px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:0 10px;font-weight:600}
+.rest{position:sticky;top:0;z-index:4;background:var(--acc);color:#fff;text-align:center;border-radius:12px;padding:10px;font-weight:700;margin-bottom:8px}
+@media (prefers-color-scheme:dark){.rest{color:#042f2e}}
+.prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:4px 0 12px}.prog i{display:block;height:100%;background:var(--acc)}
+.mob{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.mob:last-child{border:0}.mob .t{flex:1}
+.mob button{min-width:74px;height:40px;border-radius:10px;border:1px solid var(--acc);background:transparent;color:var(--acc);font-weight:700}
+.mob button.done{background:var(--acc);color:var(--card)}
+input[type=number],input[type=time],select{font-size:17px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+input[type=range]{width:100%}
+label.f{display:block;margin:10px 0 4px;font-weight:600}
+.big{font-size:56px;font-weight:800;text-align:center;margin:8px 0}
+.overlay{position:fixed;inset:0;background:rgba(2,6,23,.92);color:#fff;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.overlay .big{font-size:96px}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.gal img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:8px}
+.gal div{font-size:11px;color:var(--mut);text-align:center}
+.weeks{display:flex;gap:4px;flex-wrap:wrap}.wk{width:22px;height:22px;border-radius:5px;background:var(--line)}.wk.h{background:var(--warn)}.wk.f{background:var(--acc)}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-weight:600;z-index:30}
+.chg{font-size:14px;padding:6px 0;border-bottom:1px solid var(--line)}.chg:last-child{border:0}
+svg.ch{width:100%;height:160px}
+.lnk{flex:1;text-align:center;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<nav id="nav">
+  <button data-t="home">Сьогодні</button>
+  <button data-t="prog">Прогрес</button>
+  <button data-t="set">Налаштування</button>
+</nav>
+<script>
+"use strict";
+/* ============ ДАНІ ============ */
+const LS='homefit_v1', DAY=864e5;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// type: reps | hold (секунди) | rounds (інтервали)
+const EX={
+ squat:{name:'Присідання до стільця',type:'reps',min:8,max:15,step:1,knee:true,levels:[
+  {n:'Сісти-встати зі стільця, допомагаючи руками',d:'Стілець без коліщат. Ноги на ширині плечей. Таз назад, груди вперед. Коліна дивляться туди ж, куди носки.'},
+  {n:'Сісти-встати без рук',d:'Руки схрещені на грудях. Встаєш за рахунок сідниць, п’яти тиснуть у підлогу.'},
+  {n:'Повільно вниз (3 с), торкнутися і встати',d:'3 секунди опускаєшся, лише торкаєшся сидіння і одразу встаєш.'},
+  {n:'Присід над стільцем з паузою 2 с',d:'Зупиняєшся на 2 с в сантиметрі над сидінням, не сідаючи.'},
+  {n:'Розніжка до стільця (кожна нога)',d:'Одна нога на півкроку попереду, задня на носку. Сісти-встати, працює передня нога. Потім інша.',side:true}
+ ]},
+ hinge:{name:'Нахил з прямою спиною (хіп-хінж)',type:'reps',min:8,max:15,step:1,levels:[
+  {n:'Хінж біля стіни: таз торкається стіни',d:'Стань за 20 см від стіни спиною. Коліна злегка зігнуті, відводиш таз назад до дотику, спина пряма. Повернись, стисни сідниці.'},
+  {n:'Хінж з паузою 2 с внизу',d:'Те саме без стіни. Внизу пауза, відчуй натяг задньої поверхні стегна.'},
+  {n:'Тяга на одній нозі, тримаючись за стіл (кожна нога)',d:'Рука на столі. Нахиляєшся вперед, вільна нога йде назад прямою лінією з корпусом.',side:true},
+  {n:'Тяга на одній нозі без опори (кожна нога)',d:'Те саме без опори. Повільно, таз рівно, не розвертай стегно.',side:true}
+ ]},
+ bridge:{name:'Сідничний місток',type:'reps',min:10,max:20,step:1,levels:[
+  {n:'Місток на двох ногах',d:'Лежачи на спині, стопи на підлозі. Підніми таз, стискаючи сідниці, не прогинаючи поперек. Внизу коротка пауза.'},
+  {n:'Місток з утриманням 3 с вгорі',d:'Вгорі тримаєш 3 секунди, сідниці стиснуті.'},
+  {n:'Місток на одній нозі (кожна нога)',d:'Одна нога випрямлена в повітрі. Таз не перекошується.',side:true},
+  {n:'Підйом таза, лопатки на дивані/стільці',d:'Лопатки спираються на край дивана, стопи на підлозі. Таз вниз — і вгору до прямої лінії.'},
+  {n:'Те саме на одній нозі (кожна нога)',d:'Лопатки на дивані, одна нога в повітрі.',side:true}
+ ]},
+ abd:{name:'Середній сідничний (стабільність стегна)',type:'reps',min:10,max:20,step:1,levels:[
+  {n:'«Мушля» лежачи на боці (кожна сторона)',d:'Лежиш на боці, коліна зігнуті, стопи разом. Відкриваєш верхнє коліно, таз не розвертаєш назад.',side:true},
+  {n:'Підйом прямої ноги лежачи на боці (кожна сторона)',d:'Нижня нога зігнута. Верхня пряма, носок трохи вниз, піднімаєш на 30–40 см.',side:true},
+  {n:'Підйом ноги з утриманням 3 с (кожна сторона)',d:'Те саме, вгорі тримаєш 3 секунди.',side:true},
+  {n:'Бокова планка з колін + підйом верхньої ноги (кожна сторона)',d:'Опора на лікоть і нижнє коліно, таз піднятий. Піднімаєш і опускаєш верхню пряму ногу.',side:true}
+ ]},
+ push:{name:'Віджимання',type:'reps',min:8,max:20,step:1,levels:[
+  {n:'Віджимання від стола',d:'Руки на краю стійкого стола. Тіло пряме, груди до краю.'},
+  {n:'Віджимання від підлоги',d:'Тіло — одна лінія, сідниці і прес напружені. Лікті під 45° до корпусу.'},
+  {n:'Повільні віджимання: 3 с вниз, пауза 1 с',d:'Вниз рахуєш до трьох, внизу пауза, вгору енергійно.'},
+  {n:'Віджимання з ногами на стільці',d:'Стопи на сидінні стільця. Не провисай у попереку.'},
+  {n:'Ноги на стільці + повільно 3-1-1',d:'Найважчий рівень: ноги на стільці і повільний темп.'}
+ ]},
+ row:{name:'Тяга (спина)',type:'reps',min:8,max:15,step:1,levels:[
+  {n:'«Супермен-Y» лежачи на животі',d:'Руки буквою Y, великі пальці вгору. Піднімаєш руки й груди на кілька см, зводиш лопатки, 2 с вгорі. Шия довга, дивишся в підлогу.'},
+  {n:'Тяга за одвірок однією рукою (кожна рука)',d:'Стань в дверному проємі, візьмись рукою за край одвірка, відхились назад. Тягни себе до одвірка ліктем назад, лопатку до хребта.',side:true},
+  {n:'Тяга під столом, коліна зігнуті',d:'ТІЛЬКИ масивний стійкий стіл. Лягаєш під стіл, береш край, тягнеш груди до столу, тіло пряме від колін до плечей.'},
+  {n:'Тяга під столом, ноги прямі',d:'Те саме, ноги прямі — тіло пряма лінія від п’ят.'}
+ ]},
+ birddog:{name:'«Пташка-собака» (спина)',type:'reps',min:6,max:10,step:1,levels:[
+  {n:'Стоячи на чотирьох: тільки рука або тільки нога (кожна сторона)',d:'Спина рівна, ніби на попереку склянка води. Витягни руку вперед, повернись; потім ногу назад.',side:true},
+  {n:'Рука + протилежна нога, утримання 5 с (кожна сторона)',d:'Права рука і ліва нога разом. Тримай 5 с, корпус не хитається.',side:true},
+  {n:'Те саме, утримання 10 с (кожна сторона)',d:'Тримаєш 10 секунд. Дихаєш рівно.',side:true},
+  {n:'З дотиком лікоть-коліно між повтореннями (кожна сторона)',d:'Між витягуваннями зводиш лікоть і коліно під животом, не торкаючись підлоги.',side:true}
+ ]},
+ deadbug:{name:'«Мертвий жук» (прес без навантаження на спину)',type:'reps',min:6,max:12,step:1,levels:[
+  {n:'Тільки ноги, коліна зігнуті (кожна сторона)',d:'Лежиш на спині, руки вгору, ноги 90/90. Поперек притиснутий до підлоги. Опускаєш одну п’яту до підлоги, повертаєш.',side:true},
+  {n:'Рука + протилежна нога (кожна сторона)',d:'Одночасно опускаєш руку за голову і протилежну ногу. Поперек не відривається.',side:true},
+  {n:'Пряма нога і рука, повільно 3 с (кожна сторона)',d:'Нога випрямляється до самого низу, 3 секунди туди.',side:true}
+ ]},
+ plank:{name:'Планка',type:'hold',min:20,max:60,step:5,levels:[
+  {n:'Планка з колін',d:'Лікті під плечима, коліна на підлозі, від колін до голови пряма лінія. Сідниці стиснуті.'},
+  {n:'Планка на передпліччях',d:'Тіло пряме, прес і сідниці напружені. Не провисай.'},
+  {n:'Планка з підйомом ноги по черзі',d:'Кожні 2–3 с піднімаєш одну ногу на 10 см. Таз нерухомий.'},
+  {n:'Планка на прямих руках з дотиком плеча',d:'По черзі торкаєшся рукою протилежного плеча. Таз не розгойдується.'}
+ ]},
+ side:{name:'Бокова планка',type:'hold',min:15,max:45,step:5,side:true,levels:[
+  {n:'Бокова планка з колін (кожна сторона)',d:'Лікоть під плечем, коліна зігнуті, таз піднятий. Лінія від колін до голови.',side:true},
+  {n:'Повна бокова планка (кожна сторона)',d:'Ноги прямі, стопи одна на одній або одна перед одною.',side:true},
+  {n:'Бокова планка з підйомом верхньої ноги (кожна сторона)',d:'Утримуєш повну бокову планку з піднятою верхньою ногою.',side:true}
+ ]},
+ box:{name:'Бокс з тінню (жироспалювання без стрибків)',type:'rounds',min:4,max:10,step:1,levels:[
+  {n:'Легкий темп, 30 с робота / 30 с відпочинок',d:'Стійка стабільна, без підстрибувань. Прямі, боковi, корпус крутиться від стегна. Дихай.',w:30,r:30},
+  {n:'Швидкий темп, 30 с / 20 с',d:'Більше ударів, додай нахили і ухили корпусом.',w:30,r:20},
+  {n:'Швидкий темп, 40 с / 20 с',d:'Серії по 3–4 удари, руки весь час у роботі.',w:40,r:20}
+ ]}
+};
+const WARM=[
+ {n:'Кішка-корова',d:'На чотирьох: повільно вигинай і округлюй спину.',s:60},
+ {n:'Коліна до грудей лежачи',d:'По черзі і обидва разом, м’яко.',s:45},
+ {n:'«Двірники» лежачи',d:'Коліна зігнуті, стопи ширше плечей, перекидай коліна вліво-вправо.',s:45},
+ {n:'«Відкрита книга» на боці',d:'Лежиш на боці, коліна зігнуті, верхня рука описує дугу назад. По 30 с на сторону.',s:60},
+ {n:'Розтяжка згиначів стегна стоячи',d:'Довгий крок назад, задня нога пряма, таз підкрути. По 30 с на сторону. Без опори на коліно.',s:60},
+ {n:'Махи ногою біля стіни',d:'Тримайся за стіну, махи вперед-назад і в сторону, по 10 кожною.',s:60}
+];
+const COOL=[
+ {n:'Поза дитини',d:'Таз на п’яти, руки вперед, дихай животом.',s:45},
+ {n:'Розтяжка сідниці «четвірка» лежачи',d:'Щиколотка на протилежне коліно, тягни стегно до себе. По 30 с.',s:60},
+ {n:'Задня поверхня стегна з рушником',d:'Лежачи, пряма нога вгору, рушник на стопі. По 30 с.',s:60},
+ {n:'Скрутка лежачи',d:'Коліна в бік, плечі на підлозі. По 30 с.',s:60}
+];
+const TPL={
+ A:{name:'Тренування A',ex:['squat','push','bridge','birddog','side','box']},
+ B:{name:'Тренування B',ex:['hinge','row','abd','deadbug','plank','box']},
+ L:{name:'Легке тренування',ex:['birddog','deadbug','bridge']},
+ M:{name:'Розминка 7 хв',ex:[]}
+};
+const DEF_LV={squat:1,hinge:0,bridge:0,abd:1,push:1,row:1,birddog:1,deadbug:1,plank:1,side:0,box:0};
+// Англійські пошукові запити для кожного рівня (відео і фото техніки)
+const Q={
+ squat:['sit to stand exercise with hands','sit to stand exercise no hands','slow eccentric chair squat','box squat pause hover','split squat to chair'],
+ hinge:['hip hinge wall drill','bodyweight hip hinge pause','single leg romanian deadlift with support','single leg romanian deadlift bodyweight'],
+ bridge:['glute bridge proper form','glute bridge hold','single leg glute bridge','bodyweight hip thrust couch','single leg hip thrust couch'],
+ abd:['clamshell exercise','side lying hip abduction','side lying hip abduction hold','side plank on knees with leg raise'],
+ push:['incline push up on table','push up proper form','tempo push up slow eccentric','decline push up feet on chair','slow decline push up'],
+ row:['prone Y raise exercise','door frame row one arm','inverted row under table bent knees','inverted row under table'],
+ birddog:['quadruped arm reach leg reach','bird dog exercise proper form','bird dog 10 second hold','bird dog elbow to knee'],
+ deadbug:['dead bug legs only beginner','dead bug exercise proper form','dead bug straight leg slow'],
+ plank:['knee plank proper form','forearm plank proper form','plank with leg lift','plank shoulder taps'],
+ side:['side plank from knees','side plank proper form','side plank with leg raise'],
+ box:['shadow boxing for beginners','shadow boxing workout no jumping','shadow boxing combinations']
+};
+const QW=['cat cow stretch','supine knee to chest stretch','windshield wipers stretch lying','open book thoracic rotation','standing hip flexor stretch','leg swings hip mobility'];
+const QC=['child pose stretch','figure 4 stretch lying','hamstring stretch with towel lying','supine spinal twist'];
+function how(q){const e=encodeURIComponent(q+' form');return`<div class="row" style="margin-top:10px"><a class="lnk" href="https://www.youtube.com/results?search_query=${e}" target="_blank" rel="noopener">▶ Відео</a><a class="lnk" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(q)}" target="_blank" rel="noopener">🖼 Фото</a></div>`}
+
+/* ============ СТАН ============ */
+function localISO(d=new Date()){return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)}
+function parseISO(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
+function monday(d){const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
+function fresh(){const lv={};for(const k in EX)lv[k]={level:DEF_LV[k],target:EX[k].min};
+ return{v:1,start:localISO(),calibrated:false,lv,sessions:[],body:[],set:{rest:60,days:['TU','SA'],time:'19:00'}}}
+function load(){try{const o=JSON.parse(localStorage.getItem(LS));if(!o)return fresh();const f=fresh();o.lv=Object.assign(f.lv,o.lv);o.set=Object.assign(f.set,o.set);return Object.assign(f,o)}catch(e){return fresh()}}
+let S=load();
+function save(){localStorage.setItem(LS,JSON.stringify(S))}
+function weekNo(d=new Date()){return Math.round((monday(d)-monday(parseISO(S.start)))/(7*DAY))+1}
+function counted(x){return x.type==='A'||x.type==='B'||x.type==='L'}
+function weekSessions(w=weekNo()){return S.sessions.filter(x=>counted(x)&&x.week===w)}
+function nextType(){const l=[...S.sessions].reverse().find(x=>x.type==='A'||x.type==='B');return l&&l.type==='A'?'B':'A'}
+function deload(){return weekNo()%6===0}
+function nsets(id,type){if(EX[id].type==='rounds')return 1;if(type==='L')return 2;return deload()?2:3}
+function fmtT(id,t,n){const e=EX[id],side=e.levels[S.lv[id].level].side;
+ if(e.type==='rounds')return t+' раундів';if(e.type==='hold')return n+' × '+t+' с'+(side?' на сторону':'');return n+' × '+t+(side?' на сторону':'')}
+
+/* ============ IndexedDB для селфі ============ */
+const idb=(()=>{let p;const db=()=>p||(p=new Promise((res,rej)=>{const r=indexedDB.open('homefit',1);r.onupgradeneeded=()=>r.result.createObjectStore('img');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}));
+ const tx=async(m,f)=>{const d=await db();return new Promise((res,rej)=>{const t=d.transaction('img',m);const out=f(t.objectStore('img'));t.oncomplete=()=>res(out.result);t.onerror=()=>rej(t.error)})};
+ return{put:(k,v)=>tx('readwrite',s=>s.put(v,k)),get:k=>tx('readonly',s=>s.get(k)),keys:()=>tx('readonly',s=>s.getAllKeys()),all:()=>tx('readonly',s=>s.getAll()),clear:()=>tx('readwrite',s=>s.clear())}})();
+function shrink(file){return new Promise((res,rej)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const sc=Math.min(1,720/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',.75))};img.onerror=rej;img.src=u})}
+
+/* ============ ЗВУК / ЕКРАН ============ */
+let AC,WL;
+function beep(f=880,ms=200){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;g.gain.value=.2;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+ms/1000)}catch(e){}if(navigator.vibrate)navigator.vibrate(150)}
+async function wake(on){try{if(on&&navigator.wakeLock)WL=await navigator.wakeLock.request('screen');else if(WL){WL.release();WL=null}}catch(e){}}
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
+
+/* ============ ПРОГРЕСІЯ ============ */
+// Подвійна прогресія: росте ціль у межах діапазону; всі підходи на максимумі -> наступний рівень.
+function progress(id,vals,hurt,s){
+ const e=EX[id],top=s.level===e.levels.length-1,from={...s};let msg;
+ if(hurt){if(s.level>0){s.level--;s.target=e.min;msg='легший варіант — був біль'}else{s.target=Math.max(e.min,s.target-e.step);msg='менше — був біль'}}
+ else if(vals.every(v=>v>=e.max)&&!top){s.level++;s.target=e.min;msg='НОВИЙ РІВЕНЬ'}
+ else if(vals.every(v=>v>=s.target)){s.target=top?s.target+e.step:Math.min(e.max,s.target+e.step);msg=s.target>from.target?'+'+e.step:'тримай максимум — ще раз'}
+ else{const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+  if(avg<s.target-2*e.step){if(s.target-e.step>=e.min){s.target-=e.step;msg='−'+e.step+' (було заважко)'}else if(s.level>0){s.level--;s.target=Math.round((e.min+e.max)/2);msg='рівень нижче'}else msg='без змін'}
+  else msg='без змін — повтори'}
+ return{id,from,to:{...s},msg};
+}
+function lvTxt(id,s){const e=EX[id];return 'р.'+(s.level+1)+' · '+(e.type==='hold'?s.target+' с':e.type==='rounds'?s.target+' р.':s.target)}
+
+/* ============ НАВІГАЦІЯ ============ */
+let TAB='home',R=null;
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{if(R&&!confirm('Перервати тренування? Результат не збережеться.'))return;if(R)endSession();TAB=b.dataset.t;render()});
+function render(){
+ $('#nav').style.display=R?'none':'flex';
+ document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===TAB));
+ if(R)return renderSession();
+ if(TAB==='calib')return renderCalib();
+ ({home:renderHome,prog:renderProg,set:renderSet})[TAB]();
+ window.scrollTo(0,0);
+}
+
+/* ============ ГОЛОВНА ============ */
+function renderHome(){
+ const w=weekNo(),ws=weekSessions(w),done=ws.length,dow=(new Date().getDay()+6)%7,left=7-dow;
+ let ban='';
+ if(done>=2)ban=`<div class="banner ok">Тиждень закрито: ${done}/2 ✓</div>`;
+ else{const need=2-done;
+  if(need>left)ban=`<div class="banner bad">До кінця тижня ${left} дн., а треба ще ${need}. Зроби легке тренування сьогодні — воно теж рахується.</div>`;
+  else if(left-need<=2)ban=`<div class="banner warn">Залишилось ${left} дн. — потрібно ще ${need} тренуван${need>1?'ня':'ня'}. Не відкладай.</div>`;}
+ const t=nextType(),T=TPL[t];
+ let calib=S.calibrated?'':`<div class="card"><h2>Почни з тесту (10 хв)</h2><p class="mut">Один підхід кожної вправи до відчуття «ще 1–2 повтори в запасі». Додаток підбере стартовий рівень. Без тесту теж можна — тоді підлаштується за 2–3 тренування.</p><button class="btn" onclick="TAB='calib';render()">Пройти тест</button></div>`;
+ app.innerHTML=`
+ <h1>Тиждень ${w}${deload()?' <span class="tag">розвантажувальний</span>':''}</h1>
+ <div class="dots">${[0,1].map(i=>`<div class="dot ${i<done?'on':''}">${i<done?'✓':i+1}</div>`).join('')}${done>2?`<div class="dot on">+${done-2}</div>`:''}</div>
+ ${ban}${calib}
+ <div class="card"><div class="row sp"><h2>${T.name}</h2><span class="tag">~40 хв</span></div>
+ <ul class="plain">${T.ex.map(id=>{const s=S.lv[id];return`<li><b>${EX[id].name}</b><br><span class="mut">${esc(EX[id].levels[s.level].n)} — ${fmtT(id,s.target,nsets(id,t))}</span></li>`}).join('')}</ul>
+ <button class="btn" onclick="startSession('${t}')">Почати ${T.name}</button>
+ <button class="btn ghost" onclick="startSession('${t==='A'?'B':'A'}')">Зробити ${t==='A'?'B':'A'} замість цього</button>
+ <button class="btn ghost" onclick="startSession('L')">Легке тренування ~20 хв (теж рахується)</button></div>
+ <div class="card"><h2>Скутість? 7 хвилин</h2><p class="mut">Розминка суглобів і спини. Можна щодня, особливо зранку. До 2/тиждень не рахується.</p><button class="btn sec" onclick="startSession('M')">Розминка</button></div>`;
+}
+
+/* ============ ТЕСТ ============ */
+function renderCalib(){
+ const ids=['squat','hinge','bridge','abd','push','row','birddog','deadbug','plank','side'];
+ app.innerHTML=`<h1>Стартовий тест</h1><p class="mut">Розімнись 3–5 хв. Для кожної вправи вибери варіант, який реально можеш, і зроби ОДИН підхід до «ще 1–2 в запасі». Не до відмови. Коліно і спина не повинні боліти — якщо болить, вибери легший варіант.</p>
+ ${ids.map(id=>{const e=EX[id],s=S.lv[id];return`<div class="card"><h3>${e.name}</h3>
+ <select id="cl-${id}" style="width:100%">${e.levels.map((l,i)=>`<option value="${i}" ${i===s.level?'selected':''}>${i+1}. ${esc(l.n)}</option>`).join('')}</select>
+ <p class="mut" id="cd-${id}">${esc(e.levels[s.level].d)}</p><div id="hw-${id}">${how(Q[id][s.level])}</div>
+ <label class="f">${e.type==='hold'?'Секунд утримав':'Повторень зробив'}${id==='side'||e.levels[s.level].side?' (слабша сторона)':''}</label>
+ <input type="number" inputmode="numeric" id="cv-${id}" placeholder="напр. ${e.type==='hold'?30:10}" style="width:100%"></div>`}).join('')}
+ <button class="btn" onclick="saveCalib()">Зберегти і розрахувати</button><button class="btn ghost" onclick="TAB='home';render()">Скасувати</button>`;
+ ids.forEach(id=>$('#cl-'+id).onchange=e=>{const v=+e.target.value;$('#cd-'+id).textContent=EX[id].levels[v].d;$('#hw-'+id).innerHTML=how(Q[id][v])});
+}
+function saveCalib(){
+ const out=[];
+ for(const id in EX){const sel=$('#cl-'+id),inp=$('#cv-'+id);if(!sel)continue;const e=EX[id];let lv=+sel.value,v=parseInt(inp.value);
+  if(isNaN(v)){S.lv[id]={level:lv,target:e.min};continue}
+  let t;if(v>=e.max*2&&lv<e.levels.length-1){lv++;t=e.min}else t=Math.max(e.min,Math.min(e.max,Math.round(v*.7/e.step)*e.step));
+  if(v<e.min*.6&&lv>0){lv--;t=e.min}
+  S.lv[id]={level:lv,target:t};out.push(e.name+': '+lvTxt(id,S.lv[id]))}
+ S.calibrated=true;save();TAB='home';render();toast('Стартові рівні збережено');
+}
+
+/* ============ ТРЕНУВАННЯ ============ */
+function startSession(type){
+ beep(0,1);wake(true);
+ const steps=type==='M'?['warm']:['pain','warm',...TPL[type].ex.map(id=>'ex:'+id),'cool','done'];
+ R={type,steps,i:0,val:{},done:{},hurt:{},pain:{back:0,knee:0},rest:0,sw:null,box:null,cd:null,mdone:{},t0:Date.now(),selfie:null};
+ render();
+}
+function setupEx(){for(const id of TPL[R.type].ex){const n=nsets(id,R.type);R.val[id]=Array(n).fill(S.lv[id].target);R.done[id]=Array(n).fill(false)}}
+function endSession(){R=null;wake(false)}
+function go(d){R.i+=d;R.rest=0;R.sw=null;R.cd=null;if(R.i>=R.steps.length){if(R.type==='M'){S.sessions.push({id:Date.now(),date:localISO(),type:'M',week:weekNo()});save();endSession();TAB='home';toast('Розминку зроблено');}}render();window.scrollTo(0,0)}
+function renderSession(){
+ const st=R.steps[R.i],pct=Math.round(R.i/(R.steps.length-1||1)*100);
+ let h=`<div class="row sp"><span class="mut">${TPL[R.type].name}</span><button class="btn ghost" style="width:auto;margin:0;padding:6px" onclick="quit()">✕</button></div><div class="prog"><i style="width:${pct}%"></i></div><div id="restbar" class="rest" hidden>Відпочинок <b></b> с · <span onclick="R.rest=0" style="text-decoration:underline">пропустити</span></div>`;
+ if(st==='pain')h+=painStep();
+ else if(st==='warm')h+=mobStep(WARM,'Розминка','Не пропускай — це головне проти скутості.',QW);
+ else if(st==='cool')h+=mobStep(COOL,'Заминка','Розтяжка без ривків, дихай повільно.',QC);
+ else if(st==='done')h+=doneStep();
+ else h+=exStep(st.slice(3));
+ if(R.box)h+=`<div class="overlay" id="boxov"><div id="bxph" style="font-size:22px;font-weight:700"></div><div class="big" id="bxt"></div><div id="bxr"></div><button class="btn" style="max-width:320px" onclick="boxStop()">Стоп</button></div>`;
+ app.innerHTML=h;
+}
+function quit(){if(confirm('Вийти з тренування? Результат не збережеться.')){endSession();render()}}
+function painStep(){
+ return`<h1>Як ти сьогодні?</h1><div class="card"><label class="f">Спина: <b id="pbv">${R.pain.back}</b>/10</label><input type="range" min="0" max="10" value="${R.pain.back}" oninput="R.pain.back=+this.value;$('#pbv').textContent=this.value">
+ <label class="f">Праве коліно: <b id="pkv">${R.pain.knee}</b>/10</label><input type="range" min="0" max="10" value="${R.pain.knee}" oninput="R.pain.knee=+this.value;$('#pkv').textContent=this.value">
+ <p class="mut">0 — нічого, 10 — дуже сильно.</p></div>
+ <button class="btn" onclick="painNext()">Далі</button>`;
+}
+function painNext(){
+ if(R.type!=='L'&&(R.pain.back>=6||R.pain.knee>=6)&&confirm('Біль 6+ з 10. Рекомендую легке тренування (теж рахується до 2/тиждень). Перейти на легке?')){
+  R.type='L';R.steps=['pain','warm',...TPL.L.ex.map(id=>'ex:'+id),'cool','done'];}
+ setupEx();R.i=1;render();window.scrollTo(0,0);
+}
+function mobStep(list,title,sub,qs){
+ return`<h1>${title}</h1><p class="mut">${sub} Натисни на час — піде таймер.</p><div class="card">${list.map((m,i)=>{const k=title+i,dn=R.mdone[k];return`<div class="mob"><div class="t"><b>${m.n}</b><br><span class="mut">${m.d}</span>${how(qs[i])}</div><button class="${dn?'done':''}" id="cd-${i}" onclick="cdStart('${k}',${i},${m.s})">${dn?'✓':m.s+' с'}</button></div>`}).join('')}</div>
+ <button class="btn" onclick="go(1)">Далі</button>`;
+}
+function cdStart(k,i,s){if(R.cd&&R.cd.i===i){R.cd=null;R.mdone[k]=true;render();return}R.cd={k,i,end:Date.now()+s*1000};}
+function exStep(id){
+ const e=EX[id],s=S.lv[id],L=e.levels[s.level],n=R.val[id].length;
+ let rows='';
+ if(e.type==='rounds'){
+  rows=`<div class="set"><span class="n">⏱</span><button class="pm" onclick="adj('${id}',0,-1)">−</button><span class="val">${R.val[id][0]}</span><button class="pm" onclick="adj('${id}',0,1)">+</button><button class="ck ${R.done[id][0]?'done':''}" onclick="tick('${id}',0)">✓</button></div>
+  <button class="btn sec" onclick="boxStart('${id}')">Старт інтервалів (${L.w}/${L.r} с × ${R.val[id][0]})</button>`;
+ }else{
+  for(let i=0;i<n;i++)rows+=`<div class="set"><span class="n">${i+1}</span><button class="pm" onclick="adj('${id}',${i},-1)">−</button><span class="val" id="v-${id}-${i}">${R.val[id][i]}</span><button class="pm" onclick="adj('${id}',${i},1)">+</button>${e.type==='hold'?`<button class="sw" onclick="swTog('${id}',${i})" id="sw-${id}-${i}">${R.sw&&R.sw.id===id&&R.sw.i===i?'стоп':'▶ с'}</button>`:''}<button class="ck ${R.done[id][i]?'done':''}" onclick="tick('${id}',${i})">✓</button></div>`;
+ }
+ return`<h1>${e.name}</h1><span class="tag">Рівень ${s.level+1} з ${e.levels.length}</span>
+ <div class="card"><h3>${esc(L.n)}</h3><p>${esc(L.d)}</p>${e.knee?'<p class="mut">Коліно: дискомфорт до 3/10 нормально, гострий біль — стоп.</p>':''}${how(Q[id][s.level])}</div>
+ <div class="card"><div class="row sp"><b>Ціль: ${fmtT(id,s.target,n)}</b></div><p class="mut">Впиши, скільки реально зробив${L.side?' (на слабшу сторону)':''}, і натисни ✓. ${e.type==='hold'?'Для утримання можна запустити секундомір ▶.':''}</p>${rows}</div>
+ <label class="row" style="gap:10px;margin:12px 4px"><input type="checkbox" ${R.hurt[id]?'checked':''} onchange="R.hurt[id]=this.checked" style="width:24px;height:24px"> Було боляче (не втома, а біль) — полегшити наступного разу</label>
+ <button class="btn" onclick="go(1)">Далі</button>`;
+}
+function adj(id,i,d){const e=EX[id],st=e.type==='hold'?5:1;R.val[id][i]=Math.max(0,R.val[id][i]+d*st);render()}
+function tick(id,i){R.done[id][i]=!R.done[id][i];if(R.done[id][i]&&EX[id].type!=='rounds'&&R.done[id].some(x=>!x))R.rest=Date.now()+S.set.rest*1000;render()}
+function swTog(id,i){if(R.sw&&R.sw.id===id&&R.sw.i===i){R.val[id][i]=Math.floor((Date.now()-R.sw.t)/1000);R.sw=null;R.done[id][i]=true;beep(660);if(R.done[id].some(x=>!x))R.rest=Date.now()+S.set.rest*1000;render()}else{R.sw={id,i,t:Date.now()};R.rest=0;render()}}
+function boxStart(id){const L=EX[id].levels[S.lv[id].level];R.box={id,t0:Date.now()+3000,w:L.w,r:L.r,n:R.val[id][0],ph:''};render()}
+function boxStop(fin){const b=R.box;if(!b)return;const el=(Date.now()-b.t0)/1000,c=b.w+b.r;let done=fin?b.n:Math.max(0,Math.floor(el/c)+((el%c)>=b.w?1:0));R.val[b.id][0]=Math.min(done,b.n);R.done[b.id][0]=true;R.box=null;render()}
+function doneStep(){
+ if(!R.prev){R.prev=[];const cp=JSON.parse(JSON.stringify(S.lv));
+  if(R.type!=='L')for(const id of TPL[R.type].ex){const vals=R.val[id].filter((v,i)=>R.done[id][i]);if(!vals.length&&!R.hurt[id])continue;R.prev.push(progress(id,vals.length?vals:[0],!!R.hurt[id],cp[id]))}}
+ const min=Math.round((Date.now()-R.t0)/6e4);
+ return`<h1>Готово! 💪</h1><p class="mut">${min} хв. Тиждень: ${weekSessions().length+1}/2</p>
+ <div class="card"><h2>Наступного разу</h2>${R.type==='L'?'<p class="mut">Легке тренування — рівні не змінюються.</p>':R.prev.length?R.prev.map(c=>`<div class="chg"><b>${EX[c.id].name}</b><br>${lvTxt(c.id,c.from)} → <b>${lvTxt(c.id,c.to)}</b> <span class="mut">${c.msg}</span></div>`).join(''):'<p class="mut">Жодного підходу не відмічено — рівні без змін.</p>'}</div>
+ <div class="card"><h2>Селфі</h2><p class="mut">Одне фото після кожного тренування — за 2–3 місяці побачиш різницю.</p>
+ ${R.selfie?`<img src="${R.selfie}" style="width:100%;border-radius:12px">`:''}
+ <label class="btn sec" style="text-align:center">${R.selfie?'Перезняти':'Зробити селфі'}<input type="file" accept="image/*" capture="user" hidden onchange="takeSelfie(this)"></label></div>
+ <button class="btn" onclick="finish()">Зберегти тренування</button>`;
+}
+async function takeSelfie(inp){const f=inp.files[0];if(!f)return;try{R.selfie=await shrink(f);render()}catch(e){toast('Не вдалося обробити фото')}}
+async function finish(){
+ const id=Date.now(),rec={id,date:localISO(),type:R.type,week:weekNo(),pain:R.pain,min:Math.round((Date.now()-R.t0)/6e4),res:{},chg:(R.prev||[]).map(c=>EX[c.id].name+': '+lvTxt(c.id,c.from)+' → '+lvTxt(c.id,c.to)),selfie:!!R.selfie};
+ for(const k in R.val)rec.res[k]=R.val[k].filter((v,i)=>R.done[k][i]);
+ if(R.type!=='L')for(const c of R.prev||[])S.lv[c.id]=c.to;
+ if(R.selfie){try{await idb.put(String(id),R.selfie)}catch(e){rec.selfie=false;toast('Фото не збереглось')}}
+ S.sessions.push(rec);save();endSession();TAB='home';render();toast('Збережено. Тиждень: '+weekSessions().length+'/2');
+}
+setInterval(()=>{if(!R)return;const now=Date.now();
+ const rb=$('#restbar');if(R.rest){const l=Math.ceil((R.rest-now)/1000);if(l<=0){R.rest=0;beep(990,300);if(rb)rb.hidden=true}else if(rb){rb.hidden=false;rb.querySelector('b').textContent=l}}else if(rb)rb.hidden=true;
+ if(R.sw){const el=$('#v-'+R.sw.id+'-'+R.sw.i);if(el)el.textContent=Math.floor((now-R.sw.t)/1000)}
+ if(R.cd){const el=$('#cd-'+R.cd.i),l=Math.ceil((R.cd.end-now)/1000);if(l<=0){R.mdone[R.cd.k]=true;R.cd=null;beep();render()}else if(el)el.textContent=l+' с'}
+ if(R.box){const b=R.box,el=(now-b.t0)/1000,c=b.w+b.r;let ph,t,r;
+  if(el<0){ph='Готуйся';t=Math.ceil(-el);r=''}else{const idx=Math.floor(el/c),w=el%c;if(idx>=b.n){beep(1200,500);return boxStop(true)}r='Раунд '+(idx+1)+' з '+b.n;if(w<b.w){ph='РОБОТА';t=Math.ceil(b.w-w)}else{ph='Відпочинок';t=Math.ceil(c-w)}}
+  if(ph!==b.ph){b.ph=ph;if(el>=0)beep(ph==='РОБОТА'?1000:600,300)}
+  const a=$('#bxph'),bb=$('#bxt'),cc=$('#bxr');if(a){a.textContent=ph;bb.textContent=t;cc.textContent=r}}
+},250);
+
+/* ============ ПРОГРЕС ============ */
+async function renderProg(){
+ const cw=weekNo(),wk=[];for(let w=Math.max(1,cw-15);w<=cw;w++){const n=weekSessions(w).length;wk.push(`<div class="wk ${n>=2?'f':n?'h':''}" title="Тиждень ${w}: ${n}"></div>`)}
+ const full=[...Array(cw).keys()].filter(i=>weekSessions(i+1).length>=2).length;
+ const B=S.body.slice(-30);
+ const hist=[...S.sessions].reverse().filter(x=>x.type!=='M').slice(0,20);
+ app.innerHTML=`<h1>Прогрес</h1>
+ <div class="card"><h2>Тижні</h2><div class="weeks">${wk.join('')}</div><p class="mut">Закритих тижнів (2/2): ${full} з ${cw}. Зелений — 2/2, жовтий — 1.</p></div>
+ <div class="card"><h2>Вага і талія</h2><p class="mut">Раз на тиждень, зранку натще. Талія — на рівні пупка.</p>
+ <div class="row"><input type="number" step="0.1" inputmode="decimal" id="bw" placeholder="кг" style="flex:1"><input type="number" step="0.5" inputmode="decimal" id="bt" placeholder="талія см" style="flex:1"></div>
+ <button class="btn sec" onclick="addBody()">Записати</button>${chart(B)}</div>
+ <div class="card"><h2>Поточні рівні</h2><ul class="plain">${Object.keys(EX).map(id=>`<li class="row sp"><span>${EX[id].name}</span><b>${lvTxt(id,S.lv[id])}</b></li>`).join('')}</ul></div>
+ <div class="card"><h2>Селфі</h2><div class="gal" id="gal"><p class="mut">Завантаження…</p></div></div>
+ <div class="card"><h2>Історія</h2><ul class="plain">${hist.length?hist.map(x=>`<li><b>${x.date}</b> · ${TPL[x.type].name}${x.min?' · '+x.min+' хв':''}${x.pain&&(x.pain.back||x.pain.knee)?` <span class="mut">спина ${x.pain.back}, коліно ${x.pain.knee}</span>`:''}${x.chg&&x.chg.length?`<br><span class="mut">${x.chg.map(esc).join('<br>')}</span>`:''}</li>`).join(''):'<li class="mut">Ще немає тренувань.</li>'}</ul></div>`;
+ try{const ss=S.sessions.filter(x=>x.selfie).slice(-30).reverse();const g=$('#gal');if(!ss.length){g.innerHTML='<p class="mut">Поки порожньо.</p>';return}
+  const imgs=await Promise.all(ss.map(x=>idb.get(String(x.id))));g.innerHTML=ss.map((x,i)=>imgs[i]?`<figure style="margin:0"><img src="${imgs[i]}"><div>${x.date}</div></figure>`:'').join('')}catch(e){$('#gal').innerHTML='<p class="mut">Фото недоступні.</p>'}
+}
+function addBody(){const w=parseFloat($('#bw').value),t=parseFloat($('#bt').value);if(isNaN(w)&&isNaN(t))return toast('Впиши вагу або талію');S.body.push({date:localISO(),w:isNaN(w)?null:w,t:isNaN(t)?null:t});save();render();toast('Записано')}
+function chart(B){
+ if(B.length<2)return B.length?`<p class="mut">Останнє: ${B[0].date} — ${B[0].w??'–'} кг, ${B[0].t??'–'} см</p>`:'';
+ const line=(k,col)=>{const p=B.map((b,i)=>[i,b[k]]).filter(x=>x[1]!=null);if(p.length<2)return'';const vs=p.map(x=>x[1]),mn=Math.min(...vs),mx=Math.max(...vs),rg=mx-mn||1;
+  const pts=p.map(([i,v])=>`${(i/(B.length-1)*290+5).toFixed(1)},${(150-(v-mn)/rg*130).toFixed(1)}`).join(' ');
+  return`<polyline fill="none" stroke="${col}" stroke-width="2.5" points="${pts}"/><text x="5" y="12" font-size="11" fill="${col}">${k==='w'?'вага':'талія'}: ${vs[0]} → ${vs[vs.length-1]}</text>`.replace('y="12"',k==='w'?'y="12"':'y="26"')};
+ return`<svg class="ch" viewBox="0 0 300 160">${line('w','var(--acc)')}${line('t','var(--warn)')}</svg>`;
+}
+
+/* ============ НАЛАШТУВАННЯ ============ */
+const DAYS=[['MO','Пн'],['TU','Вт'],['WE','Ср'],['TH','Чт'],['FR','Пт'],['SA','Сб'],['SU','Нд']];
+function renderSet(){
+ app.innerHTML=`<h1>Налаштування</h1>
+ <div class="card"><h2>Нагадування в календар</h2><p class="mut">Обери 2 дні-орієнтири. Файл додасть щотижневе нагадування в календар телефона. Тренуватись можна в будь-який день — додаток рахує тиждень Пн–Нд.</p>
+ <div class="row" style="flex-wrap:wrap">${DAYS.map(([k,n])=>`<label style="padding:6px 8px;border:1px solid var(--line);border-radius:10px"><input type="checkbox" value="${k}" class="dy" ${S.set.days.includes(k)?'checked':''}> ${n}</label>`).join('')}</div>
+ <label class="f">Час</label><input type="time" id="tm" value="${S.set.time}">
+ <button class="btn sec" onclick="makeICS()">Завантажити нагадування (.ics)</button></div>
+ <div class="card"><h2>Відпочинок між підходами</h2><select id="rs" onchange="S.set.rest=+this.value;save()">${[30,45,60,75,90,120].map(v=>`<option ${v===S.set.rest?'selected':''} value="${v}">${v} с</option>`).join('')}</select></div>
+ <div class="card"><h2>Рівні вручну</h2><p class="mut">Якщо додаток помилився — виправ тут.</p>${Object.keys(EX).map(id=>{const e=EX[id],s=S.lv[id];return`<label class="f">${e.name}</label><div class="row"><select style="flex:1;min-width:0" onchange="S.lv['${id}'].level=+this.value;save()">${e.levels.map((l,i)=>`<option value="${i}" ${i===s.level?'selected':''}>${i+1}. ${esc(l.n)}</option>`).join('')}</select><input type="number" style="width:76px" value="${s.target}" onchange="S.lv['${id}'].target=Math.max(1,+this.value||${e.min});save()"></div>`}).join('')}
+ <button class="btn ghost" onclick="TAB='calib';render()">Пройти тест заново</button></div>
+ <div class="card"><h2>Резервна копія</h2><p class="mut">Дані зберігаються тільки в цьому браузері. Раз на місяць зберігай копію.</p>
+ <button class="btn sec" onclick="exportData()">Зберегти копію (.json)</button>
+ <label class="btn ghost" style="text-align:center">Відновити з копії<input type="file" accept=".json,application/json" hidden onchange="importData(this)"></label>
+ <button class="btn bad" onclick="resetAll()">Стерти все</button></div>`;
+ document.querySelectorAll('.dy').forEach(c=>c.onchange=()=>{const v=[...document.querySelectorAll('.dy:checked')].map(x=>x.value);S.set.days=v;save()});
+ $('#tm').onchange=e=>{S.set.time=e.target.value;save()};
+}
+function dl(name,data,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
+function makeICS(){
+ const days=S.set.days;if(days.length<1)return toast('Обери хоча б 1 день');
+ const [hh,mm]=S.set.time.split(':'),idx=DAYS.map(d=>d[0]);let d=new Date();
+ for(let i=0;i<7;i++){const k=idx[(d.getDay()+6)%7];if(days.includes(k))break;d=new Date(d.getTime()+DAY)}
+ const ymd=localISO(d).replace(/-/g,''),stamp=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
+ const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//homefit//UA','BEGIN:VEVENT','UID:homefit-'+Date.now()+'@local','DTSTAMP:'+stamp,`DTSTART:${ymd}T${hh}${mm}00`,'DURATION:PT45M','RRULE:FREQ=WEEKLY;BYDAY='+days.join(','),'SUMMARY:Тренування вдома (2 на тиждень)','DESCRIPTION:Відкрий додаток і відміть тренування: '+location.href.split('#')[0],'BEGIN:VALARM','TRIGGER:-PT0M','ACTION:DISPLAY','DESCRIPTION:Час тренування','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+ dl('trenuvannya.ics',ics,'text/calendar');
+}
+async function exportData(){let img={};try{const k=await idb.keys(),v=await idb.all();k.forEach((x,i)=>img[x]=v[i])}catch(e){}dl('homefit-backup-'+localISO()+'.json',JSON.stringify({S,img}),'application/json')}
+function importData(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=async()=>{try{const o=JSON.parse(r.result);if(!o.S||!o.S.lv)throw 0;if(!confirm('Замінити поточні дані копією?'))return;localStorage.setItem(LS,JSON.stringify(o.S));S=load();for(const k in(o.img||{}))await idb.put(k,o.img[k]);toast('Відновлено');render()}catch(e){toast('Файл не підходить')}};r.readAsText(f)}
+async function resetAll(){if(!confirm('Стерти всі тренування, рівні і фото?'))return;if(!confirm('Точно? Це не скасувати.'))return;localStorage.removeItem(LS);try{await idb.clear()}catch(e){}S=fresh();save();render()}
+
+/* ============ СТАРТ ============ */
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&R)wake(true);if(!document.hidden&&!R)render()});
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+if(!localStorage.getItem(LS))save();
+render();
+</script>
+</body>
+</html>
